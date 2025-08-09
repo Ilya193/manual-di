@@ -50,6 +50,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        supportFragmentManager.fragmentFactory = fragmentFactoryImpl
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
@@ -82,6 +84,9 @@ class MainActivity : AppCompatActivity() {
                 DetailMessageFragment::class.java -> detailMessageFragment() as T
                 else -> throw NotImplementedError()
             }
+
+        override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
+            get(loadFragmentClass(classLoader, className))
 
         fun messagesFragment() =
             MessagesFragment(

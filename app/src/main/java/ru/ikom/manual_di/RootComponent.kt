@@ -35,6 +35,11 @@ class RootComponent(
 
     fun detailMessageFeature(): DetailMessagesFeature =
         object : DetailMessagesFeature {
+
+            init {
+                println("s149 init details feature")
+            }
+
             override val component: DetailMessagesFeatureComponent =
                 DetailMessagesFeatureComponent(appContainer)
 

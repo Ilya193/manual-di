@@ -19,7 +19,7 @@ class DetailMessageFragment(
     private var position = 0
 
     private val component: DetailMessagesComponent by viewModels {
-        DetailMessagesComponent.create(feature(), position)
+        DetailMessagesComponent.create(feature, position)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

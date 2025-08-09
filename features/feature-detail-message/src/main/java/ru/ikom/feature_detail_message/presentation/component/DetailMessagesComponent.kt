@@ -42,9 +42,9 @@ class DetailMessagesComponent(
     companion object {
 
         @Suppress("UNCHECKED_CAST")
-        fun create(feature: DetailMessagesFeature, position: Int) = object : ViewModelProvider.Factory {
+        fun create(feature: () -> DetailMessagesFeature, position: Int) = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return DetailMessagesComponent(feature, position) as T
+                return DetailMessagesComponent(feature(), position) as T
             }
         }
     }
