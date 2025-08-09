@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
-import ru.ikom.feature_detail_message.DetailMessageFragment
-import ru.ikom.feature_messages.MessagesFragment
+import ru.ikom.feature_detail_message.presentation.DetailMessageFragment
+import ru.ikom.feature_messages.presentation.MessagesFragment
 import ru.ikom.manual_di.app.App
 import ru.ikom.manual_di.navigation.AnimateScreen
 import ru.ikom.manual_di.navigation.BaseFragmentFactory

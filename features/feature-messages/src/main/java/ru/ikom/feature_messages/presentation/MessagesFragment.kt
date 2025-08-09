@@ -1,10 +1,11 @@
-package ru.ikom.feature_messages
+package ru.ikom.feature_messages.presentation
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import ru.ikom.feature_messages.R
 import ru.ikom.feature_messages.presentation.component.MessagesComponent
 import ru.ikom.feature_messages.presentation.component.MessagesFeature
 import ru.ikom.feature_messages.presentation.views.MessagesViewImpl

@@ -1,4 +1,4 @@
-package ru.ikom.feature_detail_message
+package ru.ikom.feature_detail_message.presentation
 
 import android.os.Bundle
 import android.view.View
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import ru.ikom.feature_detail_message.R
 import ru.ikom.feature_detail_message.presentation.component.DetailMessagesComponent
 import ru.ikom.feature_detail_message.presentation.component.DetailMessagesFeature
 
