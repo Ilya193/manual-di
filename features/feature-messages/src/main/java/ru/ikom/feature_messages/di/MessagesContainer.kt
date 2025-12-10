@@ -12,7 +12,7 @@ interface MessagesDeps {
     val messagesRepository: MessagesRepository
 }
 
-internal fun MessagesFeatureContainer(deps: MessagesDeps): MessagesContainer =
+internal fun MessagesContainer(deps: MessagesDeps): MessagesContainer =
     object : MessagesContainer {
         override val messagesRepository: MessagesRepository = deps.messagesRepository
     }

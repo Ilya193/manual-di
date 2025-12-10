@@ -8,7 +8,6 @@ import kotlinx.coroutines.flow.update
 import ru.ikom.domain_messages.MessagesRepository
 import ru.ikom.feature_messages.di.MessagesContainer
 import ru.ikom.feature_messages.di.MessagesDeps
-import ru.ikom.feature_messages.di.MessagesFeatureContainer
 import ru.ikom.feature_messages.presentation.model.MessageUi
 
 interface MessagesFeature {
@@ -20,7 +19,7 @@ interface MessagesFeature {
 
 class MessagesComponent(
     private val feature: MessagesFeature,
-    private val container: MessagesContainer = MessagesFeatureContainer(feature.deps),
+    private val container: MessagesContainer = MessagesContainer(feature.deps),
     private val messagesRepository: MessagesRepository = container.messagesRepository,
 ) : ViewModel() {
 
