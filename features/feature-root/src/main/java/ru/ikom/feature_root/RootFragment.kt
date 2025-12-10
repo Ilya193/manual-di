@@ -1,6 +1,7 @@
 package ru.ikom.feature_root
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
@@ -51,6 +52,19 @@ class RootFragment(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (childFragmentManager.backStackEntryCount > 0) {
+                        component.onBack()
+                    }
+                    else {
+                        requireActivity().finish()
+                    }
+                }
+            })
 
         component.initNavigation(isFirst = savedInstanceState == null)
     }

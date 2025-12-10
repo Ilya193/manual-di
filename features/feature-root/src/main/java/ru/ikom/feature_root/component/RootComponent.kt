@@ -29,6 +29,10 @@ class RootComponent(
         router.newRootScreen(messagesContent())
     }
 
+    fun onBack() {
+        router.exit()
+    }
+
     fun messagesFeature(): MessagesFeature =
         object : MessagesFeature {
             override val deps: MessagesDeps = feature.messagesDeps
