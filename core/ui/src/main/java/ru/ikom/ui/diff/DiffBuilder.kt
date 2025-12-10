@@ -1,4 +1,4 @@
-package ru.ikom.ui
+package ru.ikom.ui.diff
 
 interface BaseView<Model: Any> {
 

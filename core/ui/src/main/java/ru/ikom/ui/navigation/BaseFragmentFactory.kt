@@ -1,4 +1,4 @@
-package ru.ikom.manual_di.navigation
+package ru.ikom.ui.navigation
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory

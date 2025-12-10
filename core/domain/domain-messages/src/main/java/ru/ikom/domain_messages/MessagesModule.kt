@@ -1,6 +1,6 @@
 package ru.ikom.domain_messages
 
-interface MessagesModuleApi {
+interface MessagesModule {
 
     val messagesRepository: MessagesRepository
 }

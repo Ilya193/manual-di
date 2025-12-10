@@ -1,25 +1,34 @@
 package ru.ikom.manual_di.di
 
 import android.app.Application
-import ru.ikom.data.messages.di.messagesModuleImpl
-import ru.ikom.domain_messages.MessagesModuleApi
 import ru.ikom.domain_messages.MessagesRepository
-import ru.ikom.feature_detail_message.di.DetailMessagesFeatureComponentDeps
-import ru.ikom.feature_messages.di.MessagesFeatureComponentDeps
+import ru.ikom.feature_detail_message.di.DetailMessageDeps
+import ru.ikom.feature_messages.di.MessagesDeps
 
-interface AppContainer :
-    MessagesFeatureComponentDeps,
-    DetailMessagesFeatureComponentDeps
+interface AppContainer {
+
+    fun provideMessagesDeps(): MessagesDeps
+
+    fun provideDetailMessageDeps(): DetailMessageDeps
+}
 
 class DefaultAppContainer(
-    private val application: Application
+    private val application: Application,
 ) : AppContainer {
 
-    override val messagesModuleApi: MessagesModuleApi by lazy {
-        messagesModuleImpl()
+    private val coreModule: CoreModule by lazy {
+        DefaultCoreModule()
     }
 
-    override val messagesRepository: MessagesRepository
-        get() = messagesModuleApi.messagesRepository
+    override fun provideMessagesDeps(): MessagesDeps =
+        object : MessagesDeps {
+            override val messagesRepository: MessagesRepository =
+                coreModule.messagesModule.messagesRepository
+        }
 
+    override fun provideDetailMessageDeps(): DetailMessageDeps =
+        object : DetailMessageDeps {
+            override val messagesRepository: MessagesRepository =
+                coreModule.messagesModule.messagesRepository
+        }
 }

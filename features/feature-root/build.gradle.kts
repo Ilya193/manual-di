@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.ikom.ui"
+    namespace = "ru.ikom.feature_root"
     compileSdk = 36
 
     defaultConfig {
@@ -40,5 +40,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation(project(":core:ui"))
+
+    implementation(project(":features:feature-messages"))
+    implementation(project(":features:feature-detail-message"))
+
     implementation("com.github.terrakok:cicerone:7.1")
+
+    implementation("androidx.fragment:fragment-ktx:1.8.8")
 }

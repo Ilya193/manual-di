@@ -6,29 +6,30 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import ru.ikom.domain_messages.MessagesRepository
-import ru.ikom.feature_messages.di.MessagesFeatureComponent
+import ru.ikom.feature_messages.di.MessagesContainer
+import ru.ikom.feature_messages.di.MessagesDeps
+import ru.ikom.feature_messages.di.MessagesFeatureContainer
 import ru.ikom.feature_messages.presentation.model.MessageUi
 
 interface MessagesFeature {
 
-    val component: MessagesFeatureComponent
+    val deps: MessagesDeps
 
     fun onOpenDetails(index: Int)
 }
 
 class MessagesComponent(
-    private val feature: MessagesFeature
+    private val feature: MessagesFeature,
+    private val container: MessagesContainer = MessagesFeatureContainer(feature.deps),
+    private val messagesRepository: MessagesRepository = container.messagesRepository,
 ) : ViewModel() {
-
-    private val repository: MessagesRepository
-        get() = feature.component.repository
 
     private val _state = MutableStateFlow(State())
 
     val state = _state.asStateFlow()
 
     init {
-        val messages = repository.messages()
+        val messages = messagesRepository.messages()
 
         _state.update { it.copy(messages = messages.map(::MessageUi)) }
     }

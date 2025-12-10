@@ -41,14 +41,17 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(project(":features:feature-messages"))
-    implementation(project(":core:domain:domain-messages"))
-    implementation(project(":core:data:data-messages"))
-    implementation(project(":features:feature-detail-message"))
-    implementation(project(":core:ui"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation(project(":core:ui"))
+    implementation(project(":core:domain:domain-messages"))
+    implementation(project(":core:data:data-messages"))
+
+    implementation(project(":features:feature-root"))
+    implementation(project(":features:feature-messages"))
+    implementation(project(":features:feature-detail-message"))
 
     implementation("com.github.terrakok:cicerone:7.1")
 }

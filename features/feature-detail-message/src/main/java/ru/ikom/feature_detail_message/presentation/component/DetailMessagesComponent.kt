@@ -6,11 +6,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import ru.ikom.domain_messages.MessagesRepository
-import ru.ikom.feature_detail_message.di.DetailMessagesFeatureComponent
+import ru.ikom.feature_detail_message.di.DetailMessageContainer
+import ru.ikom.feature_detail_message.di.DetailMessageDeps
 
 interface DetailMessagesFeature {
 
-    val component: DetailMessagesFeatureComponent
+    val deps: DetailMessageDeps
 
     fun onBack()
 }
@@ -18,16 +19,15 @@ interface DetailMessagesFeature {
 class DetailMessagesComponent(
     private val feature: DetailMessagesFeature,
     private val position: Int,
+    private val container: DetailMessageContainer = DetailMessageContainer(feature.deps),
+    private val messagesRepository: MessagesRepository = container.messagesRepository,
 ) : ViewModel() {
-
-    private val repository: MessagesRepository
-        get() = feature.component.repository
 
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
 
     init {
-        val message = repository.getMessageByPosition(position)
+        val message = messagesRepository.getMessageByPosition(position)
         _state.update { it.copy(message = message) }
     }
 
@@ -42,10 +42,11 @@ class DetailMessagesComponent(
     companion object {
 
         @Suppress("UNCHECKED_CAST")
-        fun create(feature: () -> DetailMessagesFeature, position: Int) = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return DetailMessagesComponent(feature(), position) as T
+        fun create(feature: () -> DetailMessagesFeature, position: Int) =
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return DetailMessagesComponent(feature(), position) as T
+                }
             }
-        }
     }
 }

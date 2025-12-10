@@ -10,8 +10,8 @@ import ru.ikom.feature_messages.R
 import ru.ikom.feature_messages.presentation.adapter.MessagesAdapter
 import ru.ikom.feature_messages.presentation.component.MessagesComponent
 import ru.ikom.feature_messages.presentation.model.MessageUi
-import ru.ikom.ui.BaseView
-import ru.ikom.ui.diff
+import ru.ikom.ui.diff.BaseView
+import ru.ikom.ui.diff.diff
 
 private interface MessagesView : BaseView<MessagesView.Model> {
 
