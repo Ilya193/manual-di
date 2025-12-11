@@ -20,15 +20,11 @@ class DefaultAppContainer(
         DefaultCoreModule()
     }
 
-    override fun provideMessagesDeps(): MessagesDeps =
-        object : MessagesDeps {
-            override val messagesRepository: MessagesRepository =
-                coreModule.messagesModule.messagesRepository
-        }
+    private val featureProvider: FeatureProvider by lazy {
+        DefaultFeatureProvider(coreModule)
+    }
 
-    override fun provideDetailMessageDeps(): DetailMessageDeps =
-        object : DetailMessageDeps {
-            override val messagesRepository: MessagesRepository =
-                coreModule.messagesModule.messagesRepository
-        }
+    override fun provideMessagesDeps(): MessagesDeps = featureProvider.provideMessagesDeps()
+
+    override fun provideDetailMessageDeps(): DetailMessageDeps = featureProvider.provideDetailMessageDeps()
 }
