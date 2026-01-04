@@ -10,10 +10,10 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import ru.ikom.feature_detail_message.R
 import ru.ikom.feature_detail_message.presentation.component.DetailMessagesComponent
-import ru.ikom.feature_detail_message.presentation.component.DetailMessagesFeature
+import ru.ikom.feature_detail_message.presentation.component.DetailMessageFeature
 
 class DetailMessageFragment(
-    private val feature: () -> DetailMessagesFeature,
+    private val feature: () -> DetailMessageFeature,
 ) : Fragment(R.layout.detail_message_fragment) {
 
     private var position = 0

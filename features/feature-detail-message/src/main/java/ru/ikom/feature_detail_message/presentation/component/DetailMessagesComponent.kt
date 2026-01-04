@@ -9,15 +9,30 @@ import ru.ikom.domain_messages.MessagesRepository
 import ru.ikom.feature_detail_message.di.DetailMessageContainer
 import ru.ikom.feature_detail_message.di.DetailMessageDeps
 
-interface DetailMessagesFeature {
+interface DetailMessageFeature {
 
-    val deps: DetailMessageDeps
-
-    fun onBack()
+    fun interface Factory {
+        operator fun invoke(
+            onBack: () -> Unit
+        )
+    }
 }
 
-class DetailMessagesComponent(
-    private val feature: DetailMessagesFeature,
+fun defaultDetailMessageFeatureFactory(
+    detailMessageDeps: DetailMessageDeps
+) =
+    DetailMessageFeature.Factory {
+        DefaultDetailMessageFeature(
+            detailMessageDeps = detailMessageDeps
+        )
+    }
+
+internal class DefaultDetailMessageFeature(
+    val detailMessageDeps: DetailMessageDeps
+) : DetailMessageDeps
+
+internal class DetailMessagesComponent(
+    private val feature: DefaultDetailMessageFeature,
     private val position: Int,
     private val container: DetailMessageContainer = DetailMessageContainer(feature.deps),
     private val messagesRepository: MessagesRepository = container.messagesRepository,
@@ -42,7 +57,7 @@ class DetailMessagesComponent(
     companion object {
 
         @Suppress("UNCHECKED_CAST")
-        fun create(feature: () -> DetailMessagesFeature, position: Int) =
+        fun create(feature: () -> DetailMessageFeature, position: Int) =
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return DetailMessagesComponent(feature(), position) as T

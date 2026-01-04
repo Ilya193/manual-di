@@ -15,7 +15,26 @@ interface MessagesFeature {
     val deps: MessagesDeps
 
     fun onOpenDetails(index: Int)
+
+    fun interface Factory {
+        operator fun invoke(
+            onOpenDetails: (index: Int) -> Unit
+        )
+    }
 }
+
+fun defaultMessagesFeatureFactory(
+    messagesDeps: MessagesDeps
+) =
+    MessagesFeature.Factory {
+        DefaultMessagesFeature(
+            messagesDeps = messagesDeps
+        )
+    }
+
+internal class DefaultMessagesFeature(
+    val messagesDeps: MessagesDeps
+) : MessagesFeature
 
 class MessagesComponent(
     private val feature: MessagesFeature,
