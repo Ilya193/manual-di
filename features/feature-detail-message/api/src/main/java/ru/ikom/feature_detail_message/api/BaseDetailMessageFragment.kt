@@ -19,5 +19,7 @@ interface DetailMessageFeatureScreen {
 
     fun launch(position: Int): FragmentScreen
 
+    fun sliderLaunch(position: Int): FragmentScreen
+
     fun content(feature: () -> DetailMessageFeature): BaseDetailMessageFragment
 }

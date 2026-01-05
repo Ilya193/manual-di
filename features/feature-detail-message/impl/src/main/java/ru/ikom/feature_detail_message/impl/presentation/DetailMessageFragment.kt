@@ -14,6 +14,7 @@ import ru.ikom.feature_detail_message.api.POSITION_KEY
 import ru.ikom.feature_detail_message.impl.R
 import ru.ikom.feature_detail_message.impl.di.DetailMessageDependencies
 import ru.ikom.feature_detail_message.impl.presentation.component.DetailMessagesComponent
+import ru.ikom.ui.navigation.defaultAnimationScreen
 import ru.ikom.ui.navigation.defaultFragmentScreen
 
 fun defaultDetailMessageScreen(
@@ -24,6 +25,17 @@ fun defaultDetailMessageScreen(
 
         override fun launch(position: Int): FragmentScreen =
             defaultFragmentScreen {
+                it.get(DetailMessageFragment::class.java)
+                    .setArgument(position)
+            }
+
+        override fun sliderLaunch(position: Int): FragmentScreen =
+            defaultAnimationScreen(
+                enter = ru.ikom.ui.R.anim.slide_in_right,
+                exit = ru.ikom.ui.R.anim.slide_out_left,
+                popEnter = ru.ikom.ui.R.anim.slide_in_left,
+                popExit = ru.ikom.ui.R.anim.slide_out_right,
+            ) {
                 it.get(DetailMessageFragment::class.java)
                     .setArgument(position)
             }

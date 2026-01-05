@@ -32,7 +32,7 @@ class RootComponent(
     fun messagesFeature(): MessagesFeature =
         object : MessagesFeature {
             override fun onOpenDetails(index: Int) =
-                router.navigateTo(detailMessageFeatureScreen.launch(index))
+                router.navigateTo(detailMessageFeatureScreen.sliderLaunch(index))
         }
 
     fun detailMessageFeature(): DetailMessageFeature =
