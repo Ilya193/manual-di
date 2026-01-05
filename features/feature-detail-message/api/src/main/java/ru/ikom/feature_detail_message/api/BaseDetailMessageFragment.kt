@@ -14,12 +14,15 @@ abstract class BaseDetailMessageFragment(layout: Int) : Fragment(layout) {
     }
 }
 
-interface DetailMessageFeatureScreen {
-    val tag: String
-
+interface DetailMessageFeatureLaunch {
     fun launch(position: Int): FragmentScreen
 
     fun sliderLaunch(position: Int): FragmentScreen
+}
 
+interface DetailMessageFeatureContent {
+    val tag: String
     fun content(feature: () -> DetailMessageFeature): BaseDetailMessageFragment
 }
+
+interface DetailMessageFeatureScreen : DetailMessageFeatureContent, DetailMessageFeatureLaunch

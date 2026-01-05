@@ -11,15 +11,25 @@ import androidx.fragment.app.FragmentTransaction
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import ru.ikom.feature_root.BaseRootFragment
+import ru.ikom.feature_root.RootFeatureScreen
 import ru.ikom.feature_root.RootFragment
 import ru.ikom.manual_di.app.App
+import ru.ikom.manual_di.di.AppContainer
 import ru.ikom.ui.navigation.AnimateScreen
 import ru.ikom.ui.navigation.BaseFragmentFactory
 
 class MainActivity : AppCompatActivity() {
 
+    private val appContainer: AppContainer by lazy(LazyThreadSafetyMode.NONE) {
+        (application as App).appContainer
+    }
+
+    private val rootFeatureScreen: RootFeatureScreen by lazy(LazyThreadSafetyMode.NONE) {
+        appContainer.provideRootFeatureScreen()
+    }
+
     private val component: AppComponent by viewModels {
-        AppComponent.factory((application as App).appContainer)
+        AppComponent.factory(appContainer, rootFeatureScreen)
     }
 
     private val fragmentFactoryImpl = FragmentFactoryImpl()
@@ -81,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     private inner class FragmentFactoryImpl : BaseFragmentFactory() {
         override fun <T : Fragment> get(clasz: Class<T>): T =
             when (clasz.simpleName) {
-                component.rootFeatureLauncher.screen().tag -> rootFragment() as T
+                rootFeatureScreen.tag -> rootFragment() as T
                 else -> throw NotImplementedError("not impl $clasz")
             }
 
@@ -89,6 +99,6 @@ class MainActivity : AppCompatActivity() {
             get(loadFragmentClass(classLoader, className))
 
         fun rootFragment() =
-            component.rootFeatureLauncher.screen().content(component::rootFeature)
+            rootFeatureScreen.content(component::rootFeature)
     }
 }

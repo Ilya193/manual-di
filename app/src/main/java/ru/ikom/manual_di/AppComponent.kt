@@ -3,13 +3,13 @@ package ru.ikom.manual_di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.github.terrakok.cicerone.Cicerone
-import ru.ikom.feature_root.RootFeatureLauncher
+import ru.ikom.feature_root.RootFeatureLaunch
 import ru.ikom.feature_root.component.RootFeature
 import ru.ikom.manual_di.di.AppContainer
 
 class AppComponent(
     private val appContainer: AppContainer,
-    val rootFeatureLauncher: RootFeatureLauncher = appContainer.provideRootFeatureLauncher(),
+    private val rootFeatureLaunch: RootFeatureLaunch,
 ) : ViewModel() {
 
     private val cicerone = Cicerone.create()
@@ -19,7 +19,7 @@ class AppComponent(
     fun initNavigation(isFirst: Boolean) {
         if (!isFirst) return
 
-        router.newRootScreen(rootFeatureLauncher.screen().launch())
+        router.newRootScreen(rootFeatureLaunch.launch())
     }
 
     fun rootFeature(): RootFeature =
@@ -30,9 +30,12 @@ class AppComponent(
     companion object {
 
         @Suppress("UNCHECKED_CAST")
-        fun factory(appContainer: AppContainer) = object : ViewModelProvider.Factory {
+        fun factory(
+            appContainer: AppContainer,
+            rootFeatureLaunch: RootFeatureLaunch,
+        ) = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return AppComponent(appContainer) as T
+                return AppComponent(appContainer, rootFeatureLaunch) as T
             }
         }
     }

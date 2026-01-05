@@ -7,8 +7,8 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
-import ru.ikom.feature_detail_message.api.BaseDetailMessageFragment
-import ru.ikom.feature_messages.api.BaseMessagesFragment
+import ru.ikom.feature_detail_message.api.DetailMessageFeatureContent
+import ru.ikom.feature_messages.api.MessagesFeatureContent
 import ru.ikom.feature_root.component.RootComponent
 import ru.ikom.feature_root.component.RootFeature
 import ru.ikom.feature_root.component.RootFeatureDependencies
@@ -19,13 +19,16 @@ import ru.ikom.ui.navigation.defaultFragmentScreen
 
 abstract class BaseRootFragment(layout: Int) : Fragment(layout)
 
-interface RootFeatureScreen {
-    val tag: String
-
+interface RootFeatureLaunch {
     fun launch(): FragmentScreen
+}
 
+interface RootFeatureContent {
+    val tag: String
     fun content(feature: () -> RootFeature): BaseRootFragment
 }
+
+interface RootFeatureScreen : RootFeatureContent, RootFeatureLaunch
 
 fun defaultRootScreen(
     deps: () -> RootFeatureDependencies
@@ -40,12 +43,14 @@ fun defaultRootScreen(
             }
 
         override fun content(feature: () -> RootFeature): BaseRootFragment =
-            RootFragment(feature, deps)
+            RootFragment(feature, deps())
     }
 
 class RootFragment(
     private val feature: () -> RootFeature,
-    private val deps: () -> RootFeatureDependencies,
+    private val deps: RootFeatureDependencies,
+    private val messagesFeatureContent: MessagesFeatureContent = deps.messagesFeatureScreen,
+    private val detailMessagesFeatureContent: DetailMessageFeatureContent = deps.detailMessageFeatureScreen,
 ) : BaseRootFragment(R.layout.root_fragment) {
 
     private val component: RootComponent by viewModels {
@@ -115,8 +120,8 @@ class RootFragment(
 
         override fun <T : Fragment> get(clasz: Class<T>): T =
             when (clasz.simpleName) {
-                component.rootFeatureDependencies.messagesFeatureScreen.tag -> messagesFragment() as T
-                component.rootFeatureDependencies.detailMessageFeatureScreen.tag -> detailMessageFragment() as T
+                messagesFeatureContent.tag -> messagesFragment() as T
+                detailMessagesFeatureContent.tag -> detailMessageFragment() as T
                 else -> throw NotImplementedError("no impl $clasz")
             }
 
@@ -124,13 +129,9 @@ class RootFragment(
             get(loadFragmentClass(classLoader, className))
 
         fun messagesFragment() =
-            component.rootFeatureDependencies.messagesFeatureScreen.content(
-                feature = component::messagesFeature,
-            )
+            messagesFeatureContent.content(feature = component::messagesFeature)
 
         fun detailMessageFragment() =
-            component.rootFeatureDependencies.detailMessageFeatureScreen.content(
-                feature = component::detailMessageFeature,
-            )
+            detailMessagesFeatureContent.content(feature = component::detailMessageFeature)
     }
 }

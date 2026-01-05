@@ -5,13 +5,13 @@ import ru.ikom.feature_detail_message.impl.di.DetailMessageDependencies
 import ru.ikom.feature_detail_message.impl.presentation.defaultDetailMessageScreen
 import ru.ikom.feature_messages.impl.presentation.component.MessagesFeatureDependencies
 import ru.ikom.feature_messages.impl.presentation.defaultMessagesScreen
-import ru.ikom.feature_root.RootFeatureLauncher
+import ru.ikom.feature_root.RootFeatureScreen
 import ru.ikom.feature_root.component.RootFeatureDependencies
 import ru.ikom.feature_root.defaultRootScreen
 
 interface AppContainer {
 
-    fun provideRootFeatureLauncher(): RootFeatureLauncher
+    fun provideRootFeatureScreen(): RootFeatureScreen
 }
 
 class DefaultAppContainer(
@@ -38,8 +38,6 @@ class DefaultAppContainer(
     private fun internalDetailMessageDependencies() =
         DetailMessageDependencies(coreModule.messagesModule.messagesRepository)
 
-    override fun provideRootFeatureLauncher(): RootFeatureLauncher =
-        RootFeatureLauncher(
-            rootFeatureScreen = defaultRootScreen(::internalRootFeatureDependencies),
-        )
+    override fun provideRootFeatureScreen(): RootFeatureScreen =
+        defaultRootScreen(::internalRootFeatureDependencies)
 }
