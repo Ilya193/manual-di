@@ -18,9 +18,11 @@ fun defaultMessagesScreen(
     dependencies: () -> MessagesFeatureDependencies
 ) =
     object : MessagesFeatureScreen {
+        override val tag: String get() = MessagesFragment::class.java.simpleName
+
         override fun launch(): FragmentScreen =
             defaultFragmentScreen {
-                it.get(BaseMessagesFragment::class.java)
+                it.get(MessagesFragment::class.java)
             }
 
         override fun content(feature: () -> MessagesFeature): BaseMessagesFragment =

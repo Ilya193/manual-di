@@ -15,6 +15,8 @@ abstract class BaseDetailMessageFragment(layout: Int) : Fragment(layout) {
 }
 
 interface DetailMessageFeatureScreen {
+    val tag: String
+
     fun launch(position: Int): FragmentScreen
 
     fun content(feature: () -> DetailMessageFeature): BaseDetailMessageFragment

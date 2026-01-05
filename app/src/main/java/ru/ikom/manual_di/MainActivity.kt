@@ -80,9 +80,9 @@ class MainActivity : AppCompatActivity() {
     @Suppress("UNCHECKED_CAST")
     private inner class FragmentFactoryImpl : BaseFragmentFactory() {
         override fun <T : Fragment> get(clasz: Class<T>): T =
-            when (clasz) {
-                BaseRootFragment::class.java -> rootFragment() as T
-                else -> throw NotImplementedError()
+            when (clasz.simpleName) {
+                component.rootFeatureLauncher.screen().tag -> rootFragment() as T
+                else -> throw NotImplementedError("not impl $clasz")
             }
 
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =

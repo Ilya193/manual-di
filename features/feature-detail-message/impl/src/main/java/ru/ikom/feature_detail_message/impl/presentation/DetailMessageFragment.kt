@@ -20,9 +20,11 @@ fun defaultDetailMessageScreen(
     dependencies: () -> DetailMessageDependencies
 ) =
     object : DetailMessageFeatureScreen {
+        override val tag: String get() = DetailMessageFragment::class.java.simpleName
+
         override fun launch(position: Int): FragmentScreen =
             defaultFragmentScreen {
-                it.get(BaseDetailMessageFragment::class.java)
+                it.get(DetailMessageFragment::class.java)
                     .setArgument(position)
             }
 

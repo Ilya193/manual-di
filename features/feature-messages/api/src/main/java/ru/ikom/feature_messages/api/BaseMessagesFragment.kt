@@ -6,6 +6,8 @@ import com.github.terrakok.cicerone.androidx.FragmentScreen
 abstract class BaseMessagesFragment(layout: Int) : Fragment(layout)
 
 interface MessagesFeatureScreen {
+    val tag: String
+
     fun launch(): FragmentScreen
 
     fun content(feature: () -> MessagesFeature): BaseMessagesFragment

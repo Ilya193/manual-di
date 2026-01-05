@@ -20,6 +20,8 @@ import ru.ikom.ui.navigation.defaultFragmentScreen
 abstract class BaseRootFragment(layout: Int) : Fragment(layout)
 
 interface RootFeatureScreen {
+    val tag: String
+
     fun launch(): FragmentScreen
 
     fun content(feature: () -> RootFeature): BaseRootFragment
@@ -29,9 +31,12 @@ fun defaultRootScreen(
     deps: () -> RootFeatureDependencies
 ) =
     object : RootFeatureScreen {
+
+        override val tag: String get() = RootFragment::class.java.simpleName
+
         override fun launch(): FragmentScreen =
             defaultFragmentScreen {
-                it.get(BaseRootFragment::class.java)
+                it.get(RootFragment::class.java)
             }
 
         override fun content(feature: () -> RootFeature): BaseRootFragment =
@@ -75,6 +80,8 @@ class RootFragment(
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        childFragmentManager.fragmentFactory = fragmentFactory
+
         super.onCreate(savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -107,10 +114,10 @@ class RootFragment(
     private inner class FragmentFactoryImpl : BaseFragmentFactory() {
 
         override fun <T : Fragment> get(clasz: Class<T>): T =
-            when (clasz) {
-                BaseMessagesFragment::class.java -> messagesFragment() as T
-                BaseDetailMessageFragment::class.java -> detailMessageFragment() as T
-                else -> throw NotImplementedError()
+            when (clasz.simpleName) {
+                component.rootFeatureDependencies.messagesFeatureScreen.tag -> messagesFragment() as T
+                component.rootFeatureDependencies.detailMessageFeatureScreen.tag -> detailMessageFragment() as T
+                else -> throw NotImplementedError("no impl $clasz")
             }
 
         override fun instantiate(classLoader: ClassLoader, className: String): Fragment =
