@@ -50,8 +50,12 @@ dependencies {
     implementation(project(":core:data:data-messages"))
 
     implementation(project(":features:feature-root"))
-    implementation(project(":features:feature-messages"))
-    implementation(project(":features:feature-detail-message"))
+
+    implementation(project(":features:feature-messages:api"))
+    implementation(project(":features:feature-messages:impl"))
+
+    implementation(project(":features:feature-detail-message:api"))
+    implementation(project(":features:feature-detail-message:impl"))
 
     implementation("com.github.terrakok:cicerone:7.1")
 }

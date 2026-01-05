@@ -1,15 +1,17 @@
 package ru.ikom.manual_di.di
 
 import android.app.Application
-import ru.ikom.domain_messages.MessagesRepository
-import ru.ikom.feature_detail_message.di.DetailMessageDeps
-import ru.ikom.feature_messages.di.MessagesDeps
+import ru.ikom.feature_detail_message.impl.di.DetailMessageDependencies
+import ru.ikom.feature_detail_message.impl.presentation.defaultDetailMessageScreen
+import ru.ikom.feature_messages.impl.presentation.component.MessagesFeatureDependencies
+import ru.ikom.feature_messages.impl.presentation.defaultMessagesScreen
+import ru.ikom.feature_root.RootFeatureLauncher
+import ru.ikom.feature_root.component.RootFeatureDependencies
+import ru.ikom.feature_root.defaultRootScreen
 
 interface AppContainer {
 
-    fun provideMessagesDeps(): MessagesDeps
-
-    fun provideDetailMessageDeps(): DetailMessageDeps
+    fun provideRootFeatureLauncher(): RootFeatureLauncher
 }
 
 class DefaultAppContainer(
@@ -24,7 +26,20 @@ class DefaultAppContainer(
         DefaultFeatureProvider(coreModule)
     }
 
-    override fun provideMessagesDeps(): MessagesDeps = featureProvider.provideMessagesDeps()
+    private fun internalRootFeatureDependencies() =
+        RootFeatureDependencies(
+            messagesFeatureScreen = defaultMessagesScreen(::internalMessagesFeatureDependencies),
+            detailMessageFeatureScreen = defaultDetailMessageScreen(::internalDetailMessageDependencies)
+        )
 
-    override fun provideDetailMessageDeps(): DetailMessageDeps = featureProvider.provideDetailMessageDeps()
+    private fun internalMessagesFeatureDependencies() =
+        MessagesFeatureDependencies(coreModule.messagesModule.messagesRepository)
+
+    private fun internalDetailMessageDependencies() =
+        DetailMessageDependencies(coreModule.messagesModule.messagesRepository)
+
+    override fun provideRootFeatureLauncher(): RootFeatureLauncher =
+        RootFeatureLauncher(
+            rootFeatureScreen = defaultRootScreen(::internalRootFeatureDependencies),
+        )
 }

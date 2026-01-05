@@ -3,14 +3,13 @@ package ru.ikom.manual_di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.github.terrakok.cicerone.Cicerone
-import ru.ikom.feature_detail_message.di.DetailMessageDeps
-import ru.ikom.feature_messages.di.MessagesDeps
+import ru.ikom.feature_root.RootFeatureLauncher
 import ru.ikom.feature_root.component.RootFeature
 import ru.ikom.manual_di.di.AppContainer
-import ru.ikom.manual_di.screens.rootContent
 
 class AppComponent(
-    private val appContainer: AppContainer
+    private val appContainer: AppContainer,
+    val rootFeatureLauncher: RootFeatureLauncher = appContainer.provideRootFeatureLauncher(),
 ) : ViewModel() {
 
     private val cicerone = Cicerone.create()
@@ -20,14 +19,12 @@ class AppComponent(
     fun initNavigation(isFirst: Boolean) {
         if (!isFirst) return
 
-        router.newRootScreen(rootContent())
+        router.newRootScreen(rootFeatureLauncher.screen().launch())
     }
 
     fun rootFeature(): RootFeature =
         object : RootFeature {
-            override val messagesDeps: MessagesDeps = appContainer.provideMessagesDeps()
-
-            override val detailMessageDeps: DetailMessageDeps = appContainer.provideDetailMessageDeps()
+            override fun onCloseApp() { }
         }
 
     companion object {

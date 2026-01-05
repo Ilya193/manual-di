@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
+import ru.ikom.feature_root.BaseRootFragment
 import ru.ikom.feature_root.RootFragment
 import ru.ikom.manual_di.app.App
 import ru.ikom.ui.navigation.AnimateScreen
@@ -52,8 +53,11 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.fragmentFactory = fragmentFactoryImpl
 
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
+
         setContentView(R.layout.activity_main)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -77,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     private inner class FragmentFactoryImpl : BaseFragmentFactory() {
         override fun <T : Fragment> get(clasz: Class<T>): T =
             when (clasz) {
-                RootFragment::class.java -> rootFragment() as T
+                BaseRootFragment::class.java -> rootFragment() as T
                 else -> throw NotImplementedError()
             }
 
@@ -85,8 +89,6 @@ class MainActivity : AppCompatActivity() {
             get(loadFragmentClass(classLoader, className))
 
         fun rootFragment() =
-            RootFragment(
-                feature = component::rootFeature,
-            )
+            component.rootFeatureLauncher.screen().content(component::rootFeature)
     }
 }

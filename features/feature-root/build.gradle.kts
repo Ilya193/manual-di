@@ -40,10 +40,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+
     implementation(project(":core:ui"))
 
-    implementation(project(":features:feature-messages"))
-    implementation(project(":features:feature-detail-message"))
+    implementation(project(":features:feature-messages:api"))
+    implementation(project(":features:feature-detail-message:api"))
 
     implementation("com.github.terrakok:cicerone:7.1")
 
